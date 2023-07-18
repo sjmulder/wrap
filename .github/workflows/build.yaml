@@ -1,0 +1,12 @@
+on: [push, pull_request]
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        runner: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.runner }}
+    steps:
+      - uses: actions/checkout@v2
+      - run: make
+      - run: make check
