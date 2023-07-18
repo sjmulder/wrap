@@ -3,8 +3,13 @@ wrap
 Simple text wrapping CLI and static library. Just for play since POSIX
 [fmt](https://man.openbsd.org/fmt) does it better.
 
-Comes with a [sample](sample.c) and man pages ([wrap.1](wrap.1),
-[libwrap.3](libwrap.3)).
+Comes with a [sample](sample.c), man pages ([wrap.1](wrap.1),
+[libwrap.3](libwrap.3)), [tests](test.c) and a full featured but simple
+[Makefile](Makefile).
+
+So while this may not be very useful as a tool, hopefully it serves as a
+good 'best practices' example of a C utility and library within the Unix
+tradition.
 
 CLI
 ---
