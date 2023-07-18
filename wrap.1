@@ -1,0 +1,30 @@
+.Dd July 18, 2023
+.Dt WRAP 1
+.Os
+.Sh NAME
+.Nm wrap
+.Nd wrap text to a certain width
+.Sh SYNOPSIS
+.Nm
+.Op Fl n Ar cols
+.Op Ar path
+.Sh DESCRIPTION
+Wraps the input file
+.Ar path
+.Pq or standard input
+to
+.Ar cols
+columns, or 72 by default.
+.Sh IMPLEMENTATION NOTES
+Existing line breaks and leading whitespace are preserved.
+.Sh EXIT STATUS
+Exits 0 on success,
+.Dv EX_USAGE
+.Pq 64
+on usage error, or 1 on any other error.
+.Sh SEE ALSO
+.Xr fmt 1 ,
+.Xr libwrap 3
+.Sh AUTHORS
+.An Sijmen J. Mulder
+.Aq Mt ik@sjmulder.nl

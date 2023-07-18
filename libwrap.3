@@ -1,0 +1,82 @@
+.Dd July 18, 2023
+.Dt LIBWRAP 3
+.Os
+.Sh NAME
+.Nm libwrap ,
+.Nm wrap_find_break ,
+.Nm wrap_find_resume
+.Nd simple line-wrapping library
+.Sh LIBRARY
+.Lb libwrap
+.Sh SYNOPSIS
+.In wrap.h
+.Ft size_t
+.Fn wrap_find_break "const char *s" "size_t len" "size_t cols"
+.Ft size_t
+.Fn wrap_find_resume "const char *s" "size_t len"
+.Sh DESCRIPTION
+.Nm wrap_find_break
+finds a suitable index to break string
+.Fa s
+of length
+.Fa len
+aiming for a maximum line length of
+.Fa cols .
+.Pp
+.Nm wrap_find_resume
+finds a suitable index to resume printing string
+.Fa s
+of length
+.Fa len
+after a break.
+This is to skip whitespace etc. after the break.
+.Pp
+Nul characters
+.Pq Ql \e0
+receive no special treatment - only
+.Fa len
+is used to bound the string.
+.Sh IMPLEMENTATION NOTES
+Existing line breaks and leading whitespace are preserved.
+.Sh RETURN VALUES
+Both functions return an index into
+.Fa s .
+.Nm wrap_find_break
+returns
+.Fa len
+if no suitable break location is found.
+.Nm wrap_find_resume
+returns
+.Fa len
+if the string is empty or only trailing whitespace.
+.Sh EXAMPLE
+.Bd -literal
+size_t off = 0;
+size_t len = strlen(buf);
+
+while (off < len) {
+	/* find next break to wrap to 72 columns */
+	size_t wrap_pos = wrap_find_break(buf+off, len-off, 72);
+
+	if (wrap_pos != len) {
+		/* wrap at wrap_pos, print the line */
+		fwrite(buf+off, 1, wrap_pos, stdout);
+		fputc('\en', stdout);
+
+		/* advance cursor; skip past trailing whitespace */
+		off += wrap_pos;
+		off += wrap_find_resume(buf+off, len-off);
+	} else {
+		/* nothing left to wrap */
+		fwrite(buf+off, 1, len-off, stdout);
+
+		off = len; /* reached end */
+	}
+}
+.Ed
+.Sh SEE ALSO
+.Xr fmt 1 ,
+.Xr wrap 1
+.Sh AUTHORS
+.An Sijmen J. Mulder
+.Aq Mt ik@sjmulder.nl

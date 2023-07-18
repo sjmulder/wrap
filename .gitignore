@@ -1,0 +1,9 @@
+.idea/
+cmake-*/
+build/
+*.swp
+*.o
+wrap
+sample
+test
+libwrap.a
